@@ -1,0 +1,1 @@
+../../../Picasso/Pod/Classes/NVModels/PicassoBaseModel+Private.h

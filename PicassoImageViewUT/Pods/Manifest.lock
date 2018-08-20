@@ -1,0 +1,149 @@
+PODS:
+  - clogan (0.1.1):
+    - clogan/mbedtls (= 0.1.1)
+  - clogan/mbedtls (0.1.1)
+  - CocoaAsyncSocket (7.3.5)
+  - ImageKit (1.0.10)
+  - libextobjc (0.4.5):
+    - libextobjc/EXTADT (= 0.4.5)
+    - libextobjc/EXTConcreteProtocol (= 0.4.5)
+    - libextobjc/EXTKeyPathCoding (= 0.4.5)
+    - libextobjc/EXTNil (= 0.4.5)
+    - libextobjc/EXTSafeCategory (= 0.4.5)
+    - libextobjc/EXTScope (= 0.4.5)
+    - libextobjc/EXTSelectorChecking (= 0.4.5)
+    - libextobjc/EXTSynthesize (= 0.4.5)
+    - libextobjc/NSInvocation+EXT (= 0.4.5)
+    - libextobjc/NSMethodSignature+EXT (= 0.4.5)
+    - libextobjc/RuntimeExtensions (= 0.4.5)
+    - libextobjc/UmbrellaHeader (= 0.4.5)
+  - libextobjc/EXTADT (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTConcreteProtocol (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTKeyPathCoding (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTNil (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSafeCategory (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTScope (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSelectorChecking (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSynthesize (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/NSInvocation+EXT (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/NSMethodSignature+EXT (0.4.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/RuntimeExtensions (0.4.5)
+  - libextobjc/UmbrellaHeader (0.4.5)
+  - libwebp (0.4.3):
+    - libwebp/core (= 0.4.3)
+    - libwebp/dec (= 0.4.3)
+    - libwebp/demux (= 0.4.3)
+    - libwebp/dsp (= 0.4.3)
+    - libwebp/enc (= 0.4.3)
+    - libwebp/mux (= 0.4.3)
+    - libwebp/utils (= 0.4.3)
+    - libwebp/webp (= 0.4.3)
+  - libwebp/core (0.4.3):
+    - libwebp/webp
+  - libwebp/dec (0.4.3):
+    - libwebp/core
+  - libwebp/demux (0.4.3):
+    - libwebp/core
+  - libwebp/dsp (0.4.3):
+    - libwebp/core
+  - libwebp/enc (0.4.3):
+    - libwebp/core
+  - libwebp/mux (0.4.3):
+    - libwebp/core
+  - libwebp/utils (0.4.3):
+    - libwebp/core
+  - libwebp/webp (0.4.3)
+  - LogReportSwitcher (0.5.7)
+  - ntp (1.0.15):
+    - CocoaAsyncSocket (~> 7.3.5)
+  - NVCodeLogger (0.1.56):
+    - libextobjc
+    - LogReportSwitcher
+    - NVJSON
+    - NVMonitorCenter
+    - NVNetworkLogger
+    - TMCache
+  - NVJSON (0.1.3)
+  - NVLayout (1.2.4)
+  - NVLinker (0.1.8)
+  - NVMonitorCenter (2.3.26):
+    - LogReportSwitcher
+    - NVNetworkLogger
+    - NVReachability
+  - NVNetherSwap (0.2.5):
+    - NVJSON
+    - ReactiveCocoa
+  - NVNetworkLogger (5.5.4):
+    - clogan
+    - LogReportSwitcher
+    - ntp
+    - NVLinker
+    - NVReachability
+  - NVReachability (0.4.1):
+    - NVLinker
+  - Picasso (2.1.5):
+    - NVCodeLogger
+    - NVJSON
+    - NVLayout
+    - NVMonitorCenter
+    - NVNetherSwap
+    - ReactiveCocoa
+    - SDWebImage
+    - SDWebImage/WebP
+    - SocketRocket
+    - TMCache
+  - ReactiveCocoa (2.5.4):
+    - ReactiveCocoa/UI (= 2.5.4)
+  - ReactiveCocoa/Core (2.5.4):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5.4)
+  - ReactiveCocoa/UI (2.5.4):
+    - ReactiveCocoa/Core
+  - SDWebImage (3.7.4.30):
+    - SDWebImage/Core (= 3.7.4.30)
+  - SDWebImage/Core (3.7.4.30):
+    - ImageKit
+  - SDWebImage/WebP (3.7.4.30):
+    - libwebp
+    - SDWebImage/Core
+  - SocketRocket (0.5.1.2)
+  - TMCache (1.2.6)
+
+DEPENDENCIES:
+  - Picasso
+
+SPEC CHECKSUMS:
+  clogan: 5326ac7ebebb60cf33151e8b00e6f041a8aacfdf
+  CocoaAsyncSocket: abc4e5dcfdd44cd8a761bf1370245175f9475242
+  ImageKit: 2820d01f4c9e27ac043db201106040ae340fdd3d
+  libextobjc: 9630be4948137fce1efe15b4b25bdf8e721c6f47
+  libwebp: 439fdd1006d68db75965cf58ae8b8c5e3e5a98ad
+  LogReportSwitcher: 18609f11b9f1626de277dbcf27f2546f37cd91f6
+  ntp: 3490fbe891821a66de3d3fd5f0bc71f124d81071
+  NVCodeLogger: 1084d11f741c562708ed62018ffe21c436b352dd
+  NVJSON: 8c745c46cfcb53e4f41d00d97c228e598006c29c
+  NVLayout: 51ac2d152a82fa153af726aa98fce725bb64899c
+  NVLinker: 6c2d282c691c24401080d32ab74b9abc68a4d6f5
+  NVMonitorCenter: 99181f19eeeee7004c7ac7dd7d851e8af593271a
+  NVNetherSwap: da58d0ed771cafe98101bf0a4c46c1b9962ef3b1
+  NVNetworkLogger: 87cc3e1ab792b6d15f6a9c37501912264d3d18c4
+  NVReachability: 0709ae61826043afa5c4a44d6a212971ea8c6786
+  Picasso: 5462350d9d84c8957197228c01811a11fd306f32
+  ReactiveCocoa: 11657b6463b273ed4fea6a31fd655394b342110f
+  SDWebImage: d94af5b8d54aead1aa0e76a7a863889a35e6d604
+  SocketRocket: cd452358a796356ef38c515034f9be87f70d071a
+  TMCache: dc6c628fd2db376ac4e931712470233e2eb95343
+
+PODFILE CHECKSUM: 8616900f0ed2017fc0bcfc887a13d45827ca5a6b
+
+COCOAPODS: 1.3.1

@@ -1,0 +1,1 @@
+../../../Picasso/Pod/Classes/NVModels/PicassoBaseModel.h

@@ -1,0 +1,1 @@
+../../../Picasso/Pod/Classes/Bridge/PicassoBridgeMethodConfig.h

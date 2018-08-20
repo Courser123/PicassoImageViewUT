@@ -1,0 +1,733 @@
+#import "TMMemoryCache.h"
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+#import <UIKit/UIKit.h>
+#endif
+
+NSString * const TMMemoryCachePrefix = @"com.tumblr.TMMemoryCache";
+
+@interface TMMemoryCache ()
+#if OS_OBJECT_USE_OBJC
+@property (strong, nonatomic) dispatch_queue_t queue;
+@property (strong, nonatomic) dispatch_semaphore_t lockSemaphore;
+#else
+@property (assign, nonatomic) dispatch_queue_t queue;
+@property (assign, nonatomic) dispatch_semaphore_t lockSemaphore;
+#endif
+@property (strong, nonatomic) NSMutableDictionary *dictionary;
+@property (strong, nonatomic) NSMutableDictionary *dates;
+@property (strong, nonatomic) NSMutableDictionary *costs;
+@end
+
+@implementation TMMemoryCache
+
+@synthesize ageLimit = _ageLimit;
+@synthesize costLimit = _costLimit;
+@synthesize totalCost = _totalCost;
+@synthesize willAddObjectBlock = _willAddObjectBlock;
+@synthesize willRemoveObjectBlock = _willRemoveObjectBlock;
+@synthesize willRemoveAllObjectsBlock = _willRemoveAllObjectsBlock;
+@synthesize didAddObjectBlock = _didAddObjectBlock;
+@synthesize didRemoveObjectBlock = _didRemoveObjectBlock;
+@synthesize didRemoveAllObjectsBlock = _didRemoveAllObjectsBlock;
+@synthesize didReceiveMemoryWarningBlock = _didReceiveMemoryWarningBlock;
+@synthesize didEnterBackgroundBlock = _didEnterBackgroundBlock;
+
+#pragma mark - Initialization -
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    #if !OS_OBJECT_USE_OBJC
+    dispatch_release(_queue);
+    dispatch_release(_lockSemaphore);
+    _queue = nil;
+    #endif
+}
+
+- (id)init
+{
+    if (self = [super init]) {
+        NSString *queueName = [[NSString alloc] initWithFormat:@"%@.%p", TMMemoryCachePrefix, self];
+        _queue = dispatch_queue_create([queueName UTF8String], DISPATCH_QUEUE_CONCURRENT);
+        _lockSemaphore = dispatch_semaphore_create(1);
+
+        _dictionary = [[NSMutableDictionary alloc] init];
+        _dates = [[NSMutableDictionary alloc] init];
+        _costs = [[NSMutableDictionary alloc] init];
+
+        _willAddObjectBlock = nil;
+        _willRemoveObjectBlock = nil;
+        _willRemoveAllObjectsBlock = nil;
+
+        _didAddObjectBlock = nil;
+        _didRemoveObjectBlock = nil;
+        _didRemoveAllObjectsBlock = nil;
+
+        _didReceiveMemoryWarningBlock = nil;
+        _didEnterBackgroundBlock = nil;
+
+        _ageLimit = 0.0;
+        _costLimit = 0;
+        _totalCost = 0;
+
+        _removeAllObjectsOnMemoryWarning = YES;
+        _removeAllObjectsOnEnteringBackground = YES;
+
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+        for (NSString *name in @[UIApplicationDidReceiveMemoryWarningNotification, UIApplicationDidEnterBackgroundNotification]) {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(didObserveApocalypticNotification:)
+                                                         name:name
+                                                       object:[UIApplication sharedApplication]];
+        }
+        #endif
+    }
+    return self;
+}
+
++ (instancetype)sharedCache
+{
+    static id cache;
+    static dispatch_once_t predicate;
+
+    dispatch_once(&predicate, ^{
+        cache = [[self alloc] init];
+    });
+
+    return cache;
+}
+
+#pragma mark - Private Methods -
+
+- (void)didObserveApocalypticNotification:(NSNotification *)notification
+{
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
+
+    if ([[notification name] isEqualToString:UIApplicationDidReceiveMemoryWarningNotification]) {
+        if (self.removeAllObjectsOnMemoryWarning)
+            [self removeAllObjects:nil];
+
+        __weak TMMemoryCache *weakSelf = self;
+
+        dispatch_async(_queue, ^{
+            TMMemoryCache *strongSelf = weakSelf;
+            if (!strongSelf)
+                return;
+            
+            [strongSelf lock];
+            TMMemoryCacheBlock didReceiveMemoryWarningBlock = strongSelf->_didReceiveMemoryWarningBlock;
+            [strongSelf unlock];
+            
+            if (didReceiveMemoryWarningBlock){
+                didReceiveMemoryWarningBlock(strongSelf);
+            }
+        });
+    } else if ([[notification name] isEqualToString:UIApplicationDidEnterBackgroundNotification]) {
+        if (self.removeAllObjectsOnEnteringBackground)
+            [self removeAllObjects:nil];
+
+        __weak TMMemoryCache *weakSelf = self;
+
+        dispatch_async(_queue, ^{
+            TMMemoryCache *strongSelf = weakSelf;
+            if (!strongSelf)
+                return;
+
+            [strongSelf lock];
+            TMMemoryCacheBlock didEnterBackgroundBlock = strongSelf->_didEnterBackgroundBlock;
+            [strongSelf unlock];
+            
+            if (didEnterBackgroundBlock){
+                didEnterBackgroundBlock(strongSelf);   
+            }
+        });
+    }
+    
+    #endif
+}
+
+- (void)removeObjectAndExecuteBlocksForKey:(NSString *)key
+{
+    [self lock];
+    id object = _dictionary[key];
+    NSNumber *cost = _costs[key];
+    TMMemoryCacheObjectBlock willRemoveObjectBlock = _willRemoveObjectBlock;
+    TMMemoryCacheObjectBlock didRemoveObjectBlock = _didRemoveObjectBlock;
+    [self unlock];
+    
+    if (willRemoveObjectBlock)
+        willRemoveObjectBlock(self, key, object);
+    
+    [self lock];
+    if (cost)
+        _totalCost -= [cost unsignedIntegerValue];
+    
+    [_dictionary removeObjectForKey:key];
+    [_dates removeObjectForKey:key];
+    [_costs removeObjectForKey:key];
+    [self unlock];
+    
+    if (didRemoveObjectBlock)
+        didRemoveObjectBlock(self, key, nil);
+}
+
+- (void)trimMemoryToDate:(NSDate *)trimDate
+{
+    [self lock];
+    NSArray *keysSortedByDate = [_dates keysSortedByValueUsingSelector:@selector(compare:)];
+    NSDictionary *dates = [_dates copy];
+    [self unlock];
+    
+    for (NSString *key in keysSortedByDate) { // oldest objects first
+        NSDate *accessDate = [dates objectForKey:key];
+        if (!accessDate)
+            continue;
+        
+        if ([accessDate compare:trimDate] == NSOrderedAscending) { // older than trim date
+            [self removeObjectAndExecuteBlocksForKey:key];
+        } else {
+            break;
+        }
+    }
+}
+
+- (void)trimToCostLimit:(NSUInteger)limit
+{
+    NSUInteger totalCost = 0;
+    
+    [self lock];
+    totalCost = _totalCost;
+    NSArray *keysSortedByCost = [_costs keysSortedByValueUsingSelector:@selector(compare:)];
+    [self unlock];
+    
+    if (totalCost <= limit) {
+        return;
+    }
+    
+    for (NSString *key in [keysSortedByCost reverseObjectEnumerator]) { // costliest objects first
+        [self removeObjectAndExecuteBlocksForKey:key];
+        
+        [self lock];
+        totalCost = _totalCost;
+        [self unlock];
+        
+        if (totalCost <= limit)
+            break;
+    }
+}
+
+- (void)trimToCostLimitByDate:(NSUInteger)limit
+{
+    NSUInteger totalCost = 0;
+    
+    [self lock];
+    totalCost = _totalCost;
+    NSArray *keysSortedByDate = [_dates keysSortedByValueUsingSelector:@selector(compare:)];
+    [self unlock];
+    
+    if (totalCost <= limit)
+        return;
+    
+    for (NSString *key in keysSortedByDate) { // oldest objects first
+        [self removeObjectAndExecuteBlocksForKey:key];
+        
+        [self lock];
+        totalCost = _totalCost;
+        [self unlock];
+        if (totalCost <= limit)
+            break;
+    }
+}
+
+- (void)trimToAgeLimitRecursively
+{
+    [self lock];
+    NSTimeInterval ageLimit = _ageLimit;
+    [self unlock];
+    
+    if (ageLimit == 0.0)
+        return;
+    
+    NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:-ageLimit];
+    
+    [self trimMemoryToDate:date];
+    
+    __weak TMMemoryCache *weakSelf = self;
+    
+    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ageLimit * NSEC_PER_SEC));
+    dispatch_after(time, _queue, ^(void){
+        TMMemoryCache *strongSelf = weakSelf;
+        
+        [strongSelf trimToAgeLimitRecursively];
+    });
+}
+
+#pragma mark - Public Asynchronous Methods -
+
+- (void)objectForKey:(NSString *)key block:(TMMemoryCacheObjectBlock)block
+{
+    __weak TMMemoryCache *weakSelf = self;
+
+    dispatch_async(_queue, ^{
+        TMMemoryCache *strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+
+        id object = [strongSelf objectForKey:key];
+        if (block) {
+            block(strongSelf, key, object);
+        }
+    });
+}
+
+- (void)setObject:(id)object forKey:(NSString *)key block:(TMMemoryCacheObjectBlock)block
+{
+    [self setObject:object forKey:key withCost:0 block:block];
+}
+
+- (void)setObject:(id)object forKey:(NSString *)key withCost:(NSUInteger)cost block:(TMMemoryCacheObjectBlock)block
+{
+    __weak TMMemoryCache *weakSelf = self;
+
+    dispatch_async(_queue, ^{
+        TMMemoryCache *strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+        
+        [strongSelf setObject:object forKey:key withCost:cost];
+        if (block) {
+            block(strongSelf, key, object);
+        }
+    });
+}
+
+- (void)removeObjectForKey:(NSString *)key block:(TMMemoryCacheObjectBlock)block
+{
+    __weak TMMemoryCache *weakSelf = self;
+
+    dispatch_async(_queue, ^{
+        TMMemoryCache *strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+
+        [strongSelf removeObjectForKey:key];
+        if (block) {
+            block(strongSelf, key, nil);
+        }
+    });
+}
+
+- (void)trimToDate:(NSDate *)trimDate block:(TMMemoryCacheBlock)block
+{
+    __weak TMMemoryCache *weakSelf = self;
+
+    dispatch_async(_queue, ^{
+        TMMemoryCache *strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+
+        [strongSelf trimToDate:trimDate];
+        if (block) {
+            block(strongSelf);
+        }
+    });
+}
+
+- (void)trimToCost:(NSUInteger)cost block:(TMMemoryCacheBlock)block
+{
+    __weak TMMemoryCache *weakSelf = self;
+    
+    dispatch_async(_queue, ^{
+        TMMemoryCache *strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+        
+        [strongSelf trimToCost:cost];
+        if (block) {
+            block(strongSelf);
+        }
+    });
+}
+
+- (void)trimToCostByDate:(NSUInteger)cost block:(TMMemoryCacheBlock)block
+{
+    __weak TMMemoryCache *weakSelf = self;
+    
+    dispatch_async(_queue, ^{
+        TMMemoryCache *strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+        
+        [strongSelf trimToCostByDate:cost];
+        if (block) {
+            block(strongSelf);
+        }
+    });
+}
+
+- (void)removeAllObjects:(TMMemoryCacheBlock)block
+{
+    __weak TMMemoryCache *weakSelf = self;
+    
+    dispatch_async(_queue, ^{
+        TMMemoryCache *strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+        
+        [strongSelf removeAllObjects];
+        if (block) {
+            block(strongSelf);
+        }
+    });
+}
+
+- (void)enumerateObjectsWithBlock:(TMMemoryCacheObjectBlock)block completionBlock:(TMMemoryCacheBlock)completionBlock
+{
+    __weak TMMemoryCache *weakSelf = self;
+    
+    dispatch_async(_queue, ^{
+        TMMemoryCache *strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+        
+        [strongSelf enumerateObjectsWithBlock:block];
+        if (completionBlock) {
+            completionBlock(strongSelf);
+        }
+    });
+}
+
+#pragma mark - Public Synchronous Methods -
+
+- (id)objectForKey:(NSString *)key
+{
+    if (!key)
+        return nil;
+
+    NSDate *now = [[NSDate alloc] init];
+    [self lock];
+    id objectForKey = nil;
+    objectForKey = _dictionary[key];
+    [self unlock];
+    
+    if (objectForKey) {
+        [self lock];
+        _dates[key] = now;
+        [self unlock];
+    }
+
+    return objectForKey;
+}
+
+- (void)setObject:(id)object forKey:(NSString *)key
+{
+    [self setObject:object forKey:key withCost:0];
+}
+
+- (void)setObject:(id)object forKey:(NSString *)key withCost:(NSUInteger)cost
+{
+    if (!object || !key)
+        return;
+
+    [self lock];
+    TMMemoryCacheObjectBlock willAddObjectBlock = _willAddObjectBlock;
+    TMMemoryCacheObjectBlock didAddObjectBlock = _didAddObjectBlock;
+    NSUInteger costLimit = _costLimit;
+    [self unlock];
+    
+    if (willAddObjectBlock) {
+        willAddObjectBlock(self,key,object);
+    }
+    
+    [self lock];
+    _dictionary[key] = object;
+    _dates[key] = [[NSDate alloc] init];
+    _costs[key] = @(cost);
+    
+    _totalCost += cost;
+    [self unlock];
+    
+    if (didAddObjectBlock) {
+        didAddObjectBlock(self,key,object);
+    }
+    
+    if (costLimit > 0) {
+        [self trimToCostByDate:costLimit];
+    }
+}
+
+- (void)removeObjectForKey:(NSString *)key
+{
+    if (!key)
+        return;
+    
+    [self removeObjectAndExecuteBlocksForKey:key];
+}
+
+- (void)trimToDate:(NSDate *)date
+{
+    if (!date)
+        return;
+
+    if ([date isEqualToDate:[NSDate distantPast]]) {
+        [self removeAllObjects];
+        return;
+    }
+    
+    [self trimMemoryToDate:date];
+}
+
+- (void)trimToCost:(NSUInteger)cost
+{
+    [self trimToCostLimit:cost];
+}
+
+- (void)trimToCostByDate:(NSUInteger)cost
+{
+    [self trimToCostLimitByDate:cost];
+}
+
+- (void)removeAllObjects
+{
+    [self lock];
+    TMMemoryCacheBlock willRemoveAllObjectsBlock = _willRemoveAllObjectsBlock;
+    TMMemoryCacheBlock didRemoveAllObjectsBlock = _didRemoveAllObjectsBlock;
+    [self unlock];
+    
+    if (willRemoveAllObjectsBlock)
+        willRemoveAllObjectsBlock(self);
+    
+    [self lock];
+    [_dictionary removeAllObjects];
+    [_dates removeAllObjects];
+    [_costs removeAllObjects];
+    
+    _totalCost = 0;
+    [self unlock];
+    
+    if (didRemoveAllObjectsBlock)
+        didRemoveAllObjectsBlock(self);
+}
+
+- (void)enumerateObjectsWithBlock:(TMMemoryCacheObjectBlock)block
+{
+    if (!block)
+        return;
+    
+    [self lock];
+    NSArray *keysSortedByDate = [_dates keysSortedByValueUsingSelector:@selector(compare:)];
+    
+    for (NSString *key in keysSortedByDate) {
+        block(self, key, [_dictionary objectForKey:key]);
+    }
+    [self unlock];
+}
+
+#pragma mark - Public Thread Safe Accessors -
+
+- (TMMemoryCacheObjectBlock)willAddObjectBlock
+{
+    TMMemoryCacheObjectBlock block = nil;
+
+    [self lock];
+    block = _willAddObjectBlock;
+    [self unlock];
+
+    return block;
+}
+
+- (void)setWillAddObjectBlock:(TMMemoryCacheObjectBlock)block
+{
+    [self lock];
+    _willAddObjectBlock = [block copy];
+    [self unlock];
+}
+
+- (TMMemoryCacheObjectBlock)willRemoveObjectBlock
+{
+    TMMemoryCacheObjectBlock block = nil;
+    
+    [self lock];
+    block = _willRemoveObjectBlock;
+    [self unlock];
+    
+    return block;
+}
+
+- (void)setWillRemoveObjectBlock:(TMMemoryCacheObjectBlock)block
+{
+    [self lock];
+    _willRemoveObjectBlock = [block copy];
+    [self unlock];
+}
+
+- (TMMemoryCacheBlock)willRemoveAllObjectsBlock
+{
+    TMMemoryCacheBlock block = nil;
+    
+    [self lock];
+    block = _willRemoveAllObjectsBlock;
+    [self unlock];
+    
+    return block;
+}
+
+- (void)setWillRemoveAllObjectsBlock:(TMMemoryCacheBlock)block
+{
+    [self lock];
+    _willRemoveAllObjectsBlock = [block copy];
+    [self unlock];
+}
+
+- (TMMemoryCacheObjectBlock)didAddObjectBlock
+{
+    TMMemoryCacheObjectBlock block = nil;
+    
+    [self lock];
+    block = _didAddObjectBlock;
+    [self unlock];
+    
+    return block;
+}
+
+- (void)setDidAddObjectBlock:(TMMemoryCacheObjectBlock)block
+{
+    [self lock];
+    _didAddObjectBlock = [block copy];
+    [self unlock];
+}
+
+- (TMMemoryCacheObjectBlock)didRemoveObjectBlock
+{
+    TMMemoryCacheObjectBlock block = nil;
+    
+    [self lock];
+    block = _didRemoveObjectBlock;
+    [self unlock];
+    
+    return block;
+}
+
+- (void)setDidRemoveObjectBlock:(TMMemoryCacheObjectBlock)block
+{
+    [self lock];
+    _didRemoveObjectBlock = [block copy];
+    [self unlock];
+}
+
+- (TMMemoryCacheBlock)didRemoveAllObjectsBlock
+{
+    TMMemoryCacheBlock block = nil;
+    
+    [self lock];
+    block = _didRemoveAllObjectsBlock;
+    [self unlock];
+    
+    return block;
+}
+
+- (void)setDidRemoveAllObjectsBlock:(TMMemoryCacheBlock)block
+{
+    [self lock];
+    _didRemoveAllObjectsBlock = [block copy];
+    [self unlock];
+}
+
+- (TMMemoryCacheBlock)didReceiveMemoryWarningBlock
+{
+    TMMemoryCacheBlock block = nil;
+    
+    [self lock];
+    block = _didReceiveMemoryWarningBlock;
+    [self unlock];
+    
+    return block;
+}
+
+- (void)setDidReceiveMemoryWarningBlock:(TMMemoryCacheBlock)block
+{
+    [self lock];
+    _didReceiveMemoryWarningBlock = [block copy];
+    [self unlock];
+}
+
+- (TMMemoryCacheBlock)didEnterBackgroundBlock
+{
+    TMMemoryCacheBlock block = nil;
+    
+    [self lock];
+    block = _didEnterBackgroundBlock;
+    [self unlock];
+    
+    return block;
+}
+
+- (void)setDidEnterBackgroundBlock:(TMMemoryCacheBlock)block
+{
+    [self lock];
+    _didEnterBackgroundBlock = [block copy];
+    [self unlock];
+}
+
+- (NSTimeInterval)ageLimit
+{
+    [self lock];
+    NSTimeInterval ageLimit = _ageLimit;
+    [self unlock];
+    
+    return ageLimit;
+}
+
+- (void)setAgeLimit:(NSTimeInterval)ageLimit
+{
+    [self lock];
+    _ageLimit = ageLimit;
+    [self unlock];
+    
+    [self trimToAgeLimitRecursively];
+}
+
+- (NSUInteger)costLimit
+{
+    [self lock];
+    NSUInteger costLimit = _costLimit;
+    [self unlock];
+    
+    return costLimit;
+}
+
+- (void)setCostLimit:(NSUInteger)costLimit
+{
+    [self lock];
+    _costLimit = costLimit;
+    [self unlock];
+    
+    if (costLimit > 0)
+        [self trimToCostLimitByDate:costLimit];
+}
+
+- (NSUInteger)totalCost
+{
+    NSUInteger cost = 0;
+    
+    [self lock];
+    cost = _totalCost;
+    [self unlock];
+    
+    return cost;
+}
+
+#pragma mark - Lock&Unlock
+- (void)lock
+{
+    dispatch_semaphore_wait(_lockSemaphore, DISPATCH_TIME_FOREVER);
+}
+
+- (void)unlock
+{
+    dispatch_semaphore_signal(_lockSemaphore);
+}
+
+@end

@@ -1,0 +1,1 @@
+../../../LogReportSwitcher/LogReportSwitcher/Classes/Models/LogReportSwitchModel.h

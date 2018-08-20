@@ -1,0 +1,1 @@
+../../../NVMonitorCenter/Monitor/NVSpeedMonitor.h

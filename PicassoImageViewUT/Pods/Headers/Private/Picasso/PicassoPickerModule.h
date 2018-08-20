@@ -1,0 +1,1 @@
+../../../Picasso/Pod/Classes/Module/PicassoPickerModule.h
