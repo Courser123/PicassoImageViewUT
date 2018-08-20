@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/PicassoBaseImageView.h
+../../../../../../picasso/Pod/Classes/View/ImageView/PicassoBaseImageView.h

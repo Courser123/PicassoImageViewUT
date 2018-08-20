@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/PicassoBaseImageLubanConfig.h
+../../../../../../picasso/Pod/Classes/View/ImageView/PicassoBaseImageLubanConfig.h

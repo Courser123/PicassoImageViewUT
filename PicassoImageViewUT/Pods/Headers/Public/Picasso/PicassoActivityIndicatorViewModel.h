@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/NVModels/PicassoActivityIndicatorViewModel.h
+../../../../../../picasso/Pod/Classes/NVModels/PicassoActivityIndicatorViewModel.h

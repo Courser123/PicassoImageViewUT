@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Picasso.h
+../../../../../../picasso/Pod/Classes/Picasso.h

@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Utility/UIImage+Picasso.h
+../../../../../../picasso/Pod/Classes/Utility/UIImage+Picasso.h

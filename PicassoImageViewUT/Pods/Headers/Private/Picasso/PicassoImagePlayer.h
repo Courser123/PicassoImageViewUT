@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/Animation/PicassoImagePlayer.h
+../../../../../../picasso/Pod/Classes/View/ImageView/Animation/PicassoImagePlayer.h

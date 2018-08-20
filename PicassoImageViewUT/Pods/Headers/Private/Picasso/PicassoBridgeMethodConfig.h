@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Bridge/PicassoBridgeMethodConfig.h
+../../../../../../picasso/Pod/Classes/Bridge/PicassoBridgeMethodConfig.h

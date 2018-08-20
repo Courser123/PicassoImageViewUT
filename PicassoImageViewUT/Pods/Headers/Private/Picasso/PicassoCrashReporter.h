@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Utility/PicassoCrashReporter.h
+../../../../../../picasso/Pod/Classes/Utility/PicassoCrashReporter.h

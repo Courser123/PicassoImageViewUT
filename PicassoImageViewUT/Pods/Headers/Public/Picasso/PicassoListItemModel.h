@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/NVModels/PicassoListItemModel.h
+../../../../../../picasso/Pod/Classes/NVModels/PicassoListItemModel.h

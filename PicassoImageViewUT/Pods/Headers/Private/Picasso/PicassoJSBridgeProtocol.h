@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Bridge/PicassoJSBridgeProtocol.h
+../../../../../../picasso/Pod/Classes/Bridge/PicassoJSBridgeProtocol.h

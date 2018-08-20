@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/Animation/PicassoWeakProxy.h
+../../../../../../picasso/Pod/Classes/View/ImageView/Animation/PicassoWeakProxy.h

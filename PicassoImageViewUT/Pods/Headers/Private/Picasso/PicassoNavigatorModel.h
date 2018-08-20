@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Module/PicassoNavigatorModel.h
+../../../../../../picasso/Pod/Classes/Module/PicassoNavigatorModel.h

@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/PicassoActivityIndicatorWrapper.h
+../../../../../../picasso/Pod/Classes/View/PicassoActivityIndicatorWrapper.h

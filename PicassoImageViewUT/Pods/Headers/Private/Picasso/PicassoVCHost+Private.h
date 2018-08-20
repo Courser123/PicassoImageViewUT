@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Controller/PicassoVCHost+Private.h
+../../../../../../picasso/Pod/Classes/Controller/PicassoVCHost+Private.h

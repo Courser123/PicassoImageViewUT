@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/PicassoCoreResourceManager.h
+../../../../../../picasso/Pod/Classes/PicassoCoreResourceManager.h

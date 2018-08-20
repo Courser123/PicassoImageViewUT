@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Module/PicassoBridgeModule.h
+../../../../../../picasso/Pod/Classes/Module/PicassoBridgeModule.h

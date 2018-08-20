@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Bridge/PicassoBridgeContext.h
+../../../../../../picasso/Pod/Classes/Bridge/PicassoBridgeContext.h

@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/PicassoScrollViewWrapper.h
+../../../../../../picasso/Pod/Classes/View/PicassoScrollViewWrapper.h

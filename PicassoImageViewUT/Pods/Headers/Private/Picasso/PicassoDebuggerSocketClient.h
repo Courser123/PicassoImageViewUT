@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Debug/PicassoDebuggerSocketClient.h
+../../../../../../picasso/Pod/Classes/Debug/PicassoDebuggerSocketClient.h

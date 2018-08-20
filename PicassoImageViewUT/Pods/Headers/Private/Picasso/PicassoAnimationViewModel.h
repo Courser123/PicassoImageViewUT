@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/NVModels/PicassoAnimationViewModel.h
+../../../../../../picasso/Pod/Classes/NVModels/PicassoAnimationViewModel.h

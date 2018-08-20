@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/PicassoViewInput.h
+../../../../../../picasso/Pod/Classes/PicassoViewInput.h

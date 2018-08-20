@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/PicassoImageMemItem.h
+../../../../../../picasso/Pod/Classes/View/ImageView/PicassoImageMemItem.h

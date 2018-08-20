@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Bridge/PicassoThreadManager.h
+../../../../../../picasso/Pod/Classes/Bridge/PicassoThreadManager.h

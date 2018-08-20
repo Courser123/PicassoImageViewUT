@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Bridge/PicassoDebugJSBridge.h
+../../../../../../picasso/Pod/Classes/Bridge/PicassoDebugJSBridge.h

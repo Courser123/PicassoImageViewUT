@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/NVModels/PicassoSizeToFitProtocol.h
+../../../../../../picasso/Pod/Classes/NVModels/PicassoSizeToFitProtocol.h

@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/Decode/PicassoImageProtocol.h
+../../../../../../picasso/Pod/Classes/View/ImageView/Decode/PicassoImageProtocol.h

@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Controller/PicassoBaseViewController.h
+../../../../../../picasso/Pod/Classes/Controller/PicassoBaseViewController.h

@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/PicassoListCell.h
+../../../../../../picasso/Pod/Classes/View/PicassoListCell.h

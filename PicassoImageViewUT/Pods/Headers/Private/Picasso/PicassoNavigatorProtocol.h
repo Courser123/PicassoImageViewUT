@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Implements/PicassoNavigatorProtocol.h
+../../../../../../picasso/Pod/Classes/Implements/PicassoNavigatorProtocol.h

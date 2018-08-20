@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/PicassoJSContext.h
+../../../../../../picasso/Pod/Classes/PicassoJSContext.h

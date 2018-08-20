@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/PicassoDebugMode.h
+../../../../../../picasso/Pod/Classes/PicassoDebugMode.h

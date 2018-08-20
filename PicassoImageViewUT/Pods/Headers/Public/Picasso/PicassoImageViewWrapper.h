@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/PicassoImageViewWrapper.h
+../../../../../../picasso/Pod/Classes/View/PicassoImageViewWrapper.h

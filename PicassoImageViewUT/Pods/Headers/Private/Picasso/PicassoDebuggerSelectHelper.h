@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Debug/PicassoDebuggerSelectHelper.h
+../../../../../../picasso/Pod/Classes/Debug/PicassoDebuggerSelectHelper.h

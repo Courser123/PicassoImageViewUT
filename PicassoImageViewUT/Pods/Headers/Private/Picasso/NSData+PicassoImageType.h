@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/NSData+PicassoImageType.h
+../../../../../../picasso/Pod/Classes/View/ImageView/NSData+PicassoImageType.h

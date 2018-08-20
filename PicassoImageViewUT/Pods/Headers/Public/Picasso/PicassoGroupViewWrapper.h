@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/PicassoGroupViewWrapper.h
+../../../../../../picasso/Pod/Classes/View/PicassoGroupViewWrapper.h

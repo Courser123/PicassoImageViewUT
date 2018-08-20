@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Module/PicassoVCModule.h
+../../../../../../picasso/Pod/Classes/Module/PicassoVCModule.h

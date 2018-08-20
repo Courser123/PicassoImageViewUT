@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Controller/PicassoHost+Bridge.h
+../../../../../../picasso/Pod/Classes/Controller/PicassoHost+Bridge.h

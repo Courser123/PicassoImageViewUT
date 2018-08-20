@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/NVModels/PicassoScrollViewModel.h
+../../../../../../picasso/Pod/Classes/NVModels/PicassoScrollViewModel.h

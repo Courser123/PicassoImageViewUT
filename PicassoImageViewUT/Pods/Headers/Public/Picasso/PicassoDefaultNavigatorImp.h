@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Implements/PicassoDefaultNavigatorImp.h
+../../../../../../picasso/Pod/Classes/Implements/PicassoDefaultNavigatorImp.h

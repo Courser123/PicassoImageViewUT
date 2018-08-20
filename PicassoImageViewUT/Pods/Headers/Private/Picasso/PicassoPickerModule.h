@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Module/PicassoPickerModule.h
+../../../../../../picasso/Pod/Classes/Module/PicassoPickerModule.h

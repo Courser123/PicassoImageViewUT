@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/PicassoAppConfiguration.h
+../../../../../../picasso/Pod/Classes/PicassoAppConfiguration.h

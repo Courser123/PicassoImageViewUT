@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Module/PicassoStatusBarModule.h
+../../../../../../picasso/Pod/Classes/Module/PicassoStatusBarModule.h

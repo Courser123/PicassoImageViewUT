@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/PicassoLabel.h
+../../../../../../picasso/Pod/Classes/View/PicassoLabel.h

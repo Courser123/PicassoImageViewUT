@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/PicassoSwitchWrapper.h
+../../../../../../picasso/Pod/Classes/View/PicassoSwitchWrapper.h

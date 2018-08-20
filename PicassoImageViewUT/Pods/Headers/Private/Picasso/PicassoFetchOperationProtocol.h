@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/PicassoFetchOperationProtocol.h
+../../../../../../picasso/Pod/Classes/View/ImageView/PicassoFetchOperationProtocol.h

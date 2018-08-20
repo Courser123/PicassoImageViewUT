@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/PicassoModelHelper.h
+../../../../../../picasso/Pod/Classes/PicassoModelHelper.h

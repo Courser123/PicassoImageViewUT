@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/Cache/PicassoImageCacheConfig.h
+../../../../../../picasso/Pod/Classes/View/ImageView/Cache/PicassoImageCacheConfig.h

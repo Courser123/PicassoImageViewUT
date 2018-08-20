@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Bridge/PicassoJSModuleManager.h
+../../../../../../picasso/Pod/Classes/Bridge/PicassoJSModuleManager.h

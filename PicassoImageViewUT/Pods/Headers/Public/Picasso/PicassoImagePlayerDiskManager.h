@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/Animation/PicassoImagePlayerDiskManager.h
+../../../../../../picasso/Pod/Classes/View/ImageView/Animation/PicassoImagePlayerDiskManager.h

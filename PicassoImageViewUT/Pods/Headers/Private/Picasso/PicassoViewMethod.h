@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/Bridge/PicassoViewMethod.h
+../../../../../../picasso/Pod/Classes/Bridge/PicassoViewMethod.h

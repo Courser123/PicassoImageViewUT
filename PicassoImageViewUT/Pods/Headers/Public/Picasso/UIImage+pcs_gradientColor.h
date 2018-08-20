@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/UIImage+pcs_gradientColor.h
+../../../../../../picasso/Pod/Classes/View/UIImage+pcs_gradientColor.h

@@ -91,7 +91,7 @@ PODS:
     - NVReachability
   - NVReachability (0.4.1):
     - NVLinker
-  - Picasso (2.1.5):
+  - Picasso (2.1.19):
     - NVCodeLogger
     - NVJSON
     - NVLayout
@@ -120,7 +120,11 @@ PODS:
   - TMCache (1.2.6)
 
 DEPENDENCIES:
-  - Picasso
+  - Picasso (from `../../picasso/Picasso.podspec`)
+
+EXTERNAL SOURCES:
+  Picasso:
+    :path: ../../picasso/Picasso.podspec
 
 SPEC CHECKSUMS:
   clogan: 5326ac7ebebb60cf33151e8b00e6f041a8aacfdf
@@ -138,12 +142,12 @@ SPEC CHECKSUMS:
   NVNetherSwap: da58d0ed771cafe98101bf0a4c46c1b9962ef3b1
   NVNetworkLogger: 87cc3e1ab792b6d15f6a9c37501912264d3d18c4
   NVReachability: 0709ae61826043afa5c4a44d6a212971ea8c6786
-  Picasso: 5462350d9d84c8957197228c01811a11fd306f32
+  Picasso: 24cd45842aebc25f3c9df3e288d4348e1a89187d
   ReactiveCocoa: 11657b6463b273ed4fea6a31fd655394b342110f
   SDWebImage: d94af5b8d54aead1aa0e76a7a863889a35e6d604
   SocketRocket: cd452358a796356ef38c515034f9be87f70d071a
   TMCache: dc6c628fd2db376ac4e931712470233e2eb95343
 
-PODFILE CHECKSUM: 8616900f0ed2017fc0bcfc887a13d45827ca5a6b
+PODFILE CHECKSUM: eced417e1534f765fd5b43b5e1a0a1110783befa
 
 COCOAPODS: 1.3.1

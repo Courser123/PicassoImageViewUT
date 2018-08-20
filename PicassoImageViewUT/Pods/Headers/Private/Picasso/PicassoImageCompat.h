@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/PicassoImageCompat.h
+../../../../../../picasso/Pod/Classes/View/ImageView/PicassoImageCompat.h

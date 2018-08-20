@@ -1,0 +1,106 @@
+{
+  "name": "Picasso",
+  "version": "2.1.19",
+  "summary": "Picasso business module.",
+  "description": "Picasso business module.\"",
+  "homepage": "http://git.dianpingoa.com/v1/sh/projects/MOBILE/repos/picasso/browse",
+  "license": {
+    "type": "DP license",
+    "text": "Permission is hereby granted, for DPER only\n"
+  },
+  "authors": {
+    "pengji": "peng.ji@dianping.com"
+  },
+  "source": {
+    "git": "ssh://git@git.dianpingoa.com/mobile/picasso.git",
+    "tag": "2.1.19"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "Pod/Classes/**/*.{h,m}",
+  "resources": [
+    "Pod/Assets/*.{js}",
+    "Pod/Assets/*.{png}"
+  ],
+  "public_header_files": [
+    "Pod/Classes/PicassoJSContext.h",
+    "Pod/Classes/PicassoJSObject.h",
+    "Pod/Classes/PicassoAppConfiguration.h",
+    "Pod/Classes/Picasso.h",
+    "Pod/Classes/PicassoView.h",
+    "Pod/Classes/PicassoInput.h",
+    "Pod/Classes/PicassoCoreResourceManager.h",
+    "Pod/Classes/PicassoViewInput.h",
+    "Pod/Classes/PicassoDebugMode.h",
+    "Pod/Classes/PicassoNotificationCenter.h",
+    "Pod/Classes/PicassoSDK.h",
+    "Pod/Classes/PCSPlayground.h",
+    "Pod/Classes/PicassoModelHelper.h",
+    "Pod/Classes/Bridge/PicassoCallBack.h",
+    "Pod/Classes/Bridge/PicassoThreadManager.h",
+    "Pod/Classes/Bridge/PicassoJSModuleManager.h",
+    "Pod/Classes/Bridge/PicassoBridgeMethodConfig.h",
+    "Pod/Classes/Controller/PicassoHost.h",
+    "Pod/Classes/Controller/PicassoVCHost+VCView.h",
+    "Pod/Classes/Controller/PicassoVCHost+LayoutFinished.h",
+    "Pod/Classes/Controller/PicassoVCHost+Relayout.h",
+    "Pod/Classes/Controller/PicassoVCHost.h",
+    "Pod/Classes/Controller/PicassoHostManager.h",
+    "Pod/Classes/Implements/PicassoNavigatorProtocol.h",
+    "Pod/Classes/Implements/PicassoDefaultNavigatorImp.h",
+    "Pod/Classes/Implements/UIViewController+Picasso.h",
+    "Pod/Classes/Module/PicassoBridgeModule.h",
+    "Pod/Classes/Module/PicassoNavigatorModel.h",
+    "Pod/Classes/NVModels/*.h",
+    "Pod/Classes/Utility/PicassoDefine.h",
+    "Pod/Classes/Utility/PicassoUtility.h",
+    "Pod/Classes/Utility/PicassoJsonFilter.h",
+    "Pod/Classes/Utility/UIColor+pcsUtils.h",
+    "Pod/Classes/Utility/UIImage+Picasso.h",
+    "Pod/Classes/Utility/PicassoLog.h",
+    "Pod/Classes/Utility/NSString+pcs_md5.h",
+    "Pod/Classes/Utility/NSObject+pcs_JSON.h",
+    "Pod/Classes/View/*.h",
+    "Pod/Classes/View/ImageView/*.h",
+    "Pod/Classes/View/ImageView/Cache/*.h",
+    "Pod/Classes/View/ImageView/Decode/*.h",
+    "Pod/Classes/View/ImageView/Animation/*.h",
+    "Pod/Classes/View/Refresh/PicassoRefreshProtocol.h",
+    "Pod/Classes/View/Refresh/PicassoRefreshControl.h",
+    "Pod/Classes/View/Refresh/NVLoadMoreView.h",
+    "Pod/Classes/Debug/PicassoDebuggerSelectHelper.h"
+  ],
+  "dependencies": {
+    "ReactiveCocoa": [
+
+    ],
+    "NVJSON": [
+
+    ],
+    "NVLayout": [
+
+    ],
+    "SDWebImage": [
+
+    ],
+    "SDWebImage/WebP": [
+
+    ],
+    "NVCodeLogger": [
+
+    ],
+    "NVNetherSwap": [
+
+    ],
+    "NVMonitorCenter": [
+
+    ],
+    "TMCache": [
+
+    ],
+    "SocketRocket": [
+
+    ]
+  }
+}

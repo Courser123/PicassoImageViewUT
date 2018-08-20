@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/PicassoSDK.h
+../../../../../../picasso/Pod/Classes/PicassoSDK.h

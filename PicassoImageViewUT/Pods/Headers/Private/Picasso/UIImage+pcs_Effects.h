@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/ImageView/UIImage+pcs_Effects.h
+../../../../../../picasso/Pod/Classes/View/ImageView/UIImage+pcs_Effects.h

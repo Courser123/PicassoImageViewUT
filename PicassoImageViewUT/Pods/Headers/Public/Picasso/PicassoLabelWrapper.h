@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/PicassoLabelWrapper.h
+../../../../../../picasso/Pod/Classes/View/PicassoLabelWrapper.h

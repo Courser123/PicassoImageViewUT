@@ -1,1 +1,1 @@
-../../../Picasso/Pod/Classes/View/JsonLabel/PCSJsonLabelContentStyleModel.h
+../../../../../../picasso/Pod/Classes/View/JsonLabel/PCSJsonLabelContentStyleModel.h

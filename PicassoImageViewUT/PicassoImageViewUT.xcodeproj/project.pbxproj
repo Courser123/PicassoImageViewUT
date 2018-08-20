@@ -316,12 +316,12 @@
 				"${PODS_ROOT}/ImageKit/ImageKit/Assets/Images/imagerelated_big_title_loading@3x.png",
 				"${PODS_ROOT}/ImageKit/ImageKit/Assets/Images/imagerelated_small_loading@2x.png",
 				"${PODS_ROOT}/ImageKit/ImageKit/Assets/Images/imagerelated_small_loading@3x.png",
-				"${PODS_ROOT}/Picasso/Pod/Assets/main.js",
-				"${PODS_ROOT}/Picasso/Pod/Assets/picasso-controller-bundle.js",
-				"${PODS_ROOT}/Picasso/Pod/Assets/picasso-matrix.js",
-				"${PODS_ROOT}/Picasso/Pod/Assets/picassojs-bundle.js",
-				"${PODS_ROOT}/Picasso/Pod/Assets/picassoimageview_retry@2x.png",
-				"${PODS_ROOT}/Picasso/Pod/Assets/picassoimageview_retry@3x.png",
+				"${PODS_ROOT}/../../../picasso/Pod/Assets/main.js",
+				"${PODS_ROOT}/../../../picasso/Pod/Assets/picasso-controller-bundle.js",
+				"${PODS_ROOT}/../../../picasso/Pod/Assets/picasso-matrix.js",
+				"${PODS_ROOT}/../../../picasso/Pod/Assets/picassojs-bundle.js",
+				"${PODS_ROOT}/../../../picasso/Pod/Assets/picassoimageview_retry@2x.png",
+				"${PODS_ROOT}/../../../picasso/Pod/Assets/picassoimageview_retry@3x.png",
 				"${PODS_ROOT}/ntp/Resources/ntp.hosts",
 			);
 			name = "[CP] Copy Pods Resources";
